@@ -1,10 +1,10 @@
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 from .managers import CustomUserManager
-from django.conf import settings
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
@@ -23,15 +23,32 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
 
 class Student(models.Model):
-    rating = models.FloatField(default=0.0)
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='student_profile')
+    rating = models.IntegerField(
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(100)
+        ],
+        verbose_name='Рейтинг'
+    )
+    user = models.OneToOneField(to=CustomUser, on_delete=models.CASCADE, verbose_name='Пользователь')
+
+    class Meta:
+        verbose_name = "Студенты"
+        verbose_name_plural = "Студенты"
+        ordering = ['id']
 
     def __str__(self):
-        return self.name
+        return f'Student - {self.user}'
 
 
 class Teacher(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='teacher_profile')
+    user = models.OneToOneField(to=CustomUser, on_delete=models.CASCADE, verbose_name='Пользователь')
+    specializations = models.ManyToManyField(to='courses.Specialization', verbose_name='Специализации')
+
+    class Meta:
+        verbose_name = "Преподаватели"
+        verbose_name_plural = "Преподаватели"
+        ordering = ['id']
 
     def __str__(self):
-        return self.name
+        return f'Teacher - {self.user}'
