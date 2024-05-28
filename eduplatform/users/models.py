@@ -4,6 +4,7 @@ from django.contrib.auth.models import PermissionsMixin
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 from .managers import CustomUserManager
+from django.conf import settings
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
@@ -19,3 +20,18 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
+
+
+class Student(models.Model):
+    rating = models.FloatField(default=0.0)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='student_profile')
+
+    def __str__(self):
+        return self.name
+
+
+class Teacher(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='teacher_profile')
+
+    def __str__(self):
+        return self.name
