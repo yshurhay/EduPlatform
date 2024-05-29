@@ -28,27 +28,26 @@ class Student(models.Model):
             MinValueValidator(0),
             MaxValueValidator(100)
         ],
-        verbose_name='Рейтинг'
+        verbose_name='Рейтинг',
+        default=0
     )
-    user = models.OneToOneField(to=CustomUser, on_delete=models.CASCADE, verbose_name='Пользователь')
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, verbose_name='Пользователь')
 
     class Meta:
         verbose_name = "Студенты"
         verbose_name_plural = "Студенты"
-        ordering = ['id']
 
     def __str__(self):
         return f'Student - {self.user}'
 
 
 class Teacher(models.Model):
-    user = models.OneToOneField(to=CustomUser, on_delete=models.CASCADE, verbose_name='Пользователь')
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, verbose_name='Пользователь')
     specializations = models.ManyToManyField(to='courses.Specialization', verbose_name='Специализации')
 
     class Meta:
         verbose_name = "Преподаватели"
         verbose_name_plural = "Преподаватели"
-        ordering = ['id']
 
     def __str__(self):
         return f'Teacher - {self.user}'
