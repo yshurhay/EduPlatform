@@ -1,24 +1,23 @@
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
-from django.core.validators import MinValueValidator, MaxValueValidator
-from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 
 from .managers import CustomUserManager
-
 
 __all__ = {"CustomUser", "Student", "Teacher"}
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
-    email = models.EmailField(_('email address'), unique=True)
-    first_name = models.CharField(_('first name'), max_length=50, blank=True)
-    last_name = models.CharField(_('last name'), max_length=50, blank=True)
+    email = models.EmailField(_("email address"), unique=True)
+    first_name = models.CharField(_("first name"), max_length=50, blank=True)
+    last_name = models.CharField(_("last name"), max_length=50, blank=True)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     date_joined = models.DateTimeField(default=timezone.now)
 
-    USERNAME_FIELD = 'email'
+    USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
     objects = CustomUserManager()
 
@@ -32,17 +31,16 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
 class Student(models.Model):
     rating = models.PositiveSmallIntegerField(
-        validators=[
-            MinValueValidator(0),
-            MaxValueValidator(100)
-        ],
-        verbose_name='Рейтинг',
-        default=0
+        validators=[MinValueValidator(0), MaxValueValidator(100)],
+        verbose_name="Рейтинг",
+        default=0,
     )
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, verbose_name='Пользователь')
+    user = models.OneToOneField(
+        CustomUser, on_delete=models.CASCADE, verbose_name="Пользователь"
+    )
 
     def __str__(self):
-        return f'{self.pk} - {self.user.email}'
+        return f"{self.pk} - {self.user.email}"
 
     class Meta:
         verbose_name = "Студенты"
@@ -50,11 +48,15 @@ class Student(models.Model):
 
 
 class Teacher(models.Model):
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, verbose_name='Пользователь')
-    specializations = models.ManyToManyField('courses.Specialization', verbose_name='Специализации')
+    user = models.OneToOneField(
+        CustomUser, on_delete=models.CASCADE, verbose_name="Пользователь"
+    )
+    specializations = models.ManyToManyField(
+        "courses.Specialization", verbose_name="Специализации"
+    )
 
     def __str__(self):
-        return f'Teacher - {self.user}'
+        return f"Teacher - {self.user}"
 
     class Meta:
         verbose_name = "Преподаватели"

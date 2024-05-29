@@ -1,6 +1,16 @@
 from django.contrib import admin
-from .models import (Specialization, Course, Group, Topic,
-                     Test, Question, CompletedTest, Article, Answer)
+
+from .models import (
+    Answer,
+    Article,
+    CompletedTest,
+    Course,
+    Group,
+    Question,
+    Specialization,
+    Test,
+    Topic,
+)
 
 admin.site.register(Specialization)
 admin.site.register(Course)
