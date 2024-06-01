@@ -12,23 +12,11 @@ __all__ = {
     "Answer",
     "Article",
     "CompletedTest",
-    "Image"
 }
 
 
-class Image(models.Model):
-    file = models.ImageField(verbose_name='Файл')
-
-    def __str__(self):
-        return f'Image - {self.pk}'
-
-    class Meta:
-        verbose_name = "Фото"
-        verbose_name_plural = "Фото"
-
-
 class Specialization(models.Model):
-    title = models.CharField(max_length=50, verbose_name='Название')
+    title = models.CharField(max_length=50)
 
     def __str__(self):
         return f"{self.pk} - {self.title}"
@@ -42,7 +30,7 @@ class Course(models.Model):
     title = models.CharField(max_length=100, verbose_name="Название")
     description = models.TextField(verbose_name="Описание")
     duration = models.DurationField(verbose_name="Продолжительность")
-    specialization = models.ManyToManyField(Specialization, verbose_name='Специализации')
+    specialization = models.ManyToManyField(Specialization)
 
     def __str__(self):
         return f"{self.pk} - {self.title}"
@@ -59,7 +47,9 @@ class Group(models.Model):
     )
     course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name="Курс")
     students = models.ManyToManyField(Student, verbose_name="Студенты")
-    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, verbose_name="Преподаватель")
+    teacher = models.ForeignKey(
+        Teacher, on_delete=models.CASCADE, verbose_name="Преподаватель"
+    )
 
     @property
     def students_quantity(self):
@@ -88,7 +78,7 @@ class Topic(models.Model):
 
 class Test(models.Model):
     title = models.CharField(max_length=50, verbose_name="Название")
-    images = models.ManyToManyField(Image, verbose_name="Фото", blank=True)
+    image = models.ImageField(verbose_name="Фото", blank=True)
     topic = models.ForeignKey(Topic, on_delete=models.CASCADE, verbose_name="Тема")
 
     def __str__(self):
@@ -123,7 +113,9 @@ class Question(models.Model):
 class Answer(models.Model):
     title = models.CharField(max_length=100, verbose_name="Ответ")
     is_correct = models.BooleanField(verbose_name="Верный ответ")
-    question = models.ForeignKey(Question, on_delete=models.CASCADE, verbose_name="Вопрос")
+    question = models.ForeignKey(
+        Question, on_delete=models.CASCADE, verbose_name="Вопрос"
+    )
 
     class Meta:
         verbose_name = "Ответ"
@@ -136,8 +128,8 @@ class Answer(models.Model):
 class Article(models.Model):
     title = models.CharField(max_length=100, verbose_name="Название")
     description = models.TextField(verbose_name="Описание")
-    images = models.ManyToManyField(Image, verbose_name="Фото", blank=True)
-    specializations = models.ManyToManyField(Specialization, verbose_name='Специализации')
+    image = models.ImageField(verbose_name="Фото", blank=True)
+    specializations = models.ManyToManyField(Specialization)
 
     def __str__(self):
         return f"{self.pk} - {self.title}"
@@ -148,8 +140,8 @@ class Article(models.Model):
 
 
 class CompletedTest(models.Model):
-    test = models.ForeignKey(Test, on_delete=models.CASCADE, verbose_name='Тест')
-    student = models.ForeignKey(Student, on_delete=models.CASCADE, verbose_name='Студент')
+    test = models.ForeignKey(Test, on_delete=models.CASCADE)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.student} - {self.test}"

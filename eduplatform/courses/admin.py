@@ -10,7 +10,6 @@ from .models import (
     Specialization,
     Test,
     Topic,
-    Image
 )
 
 admin.site.register(Specialization)
@@ -22,4 +21,3 @@ admin.site.register(Question)
 admin.site.register(CompletedTest)
 admin.site.register(Article)
 admin.site.register(Answer)
-admin.site.register(Image)
