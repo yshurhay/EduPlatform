@@ -13,7 +13,24 @@ __all__ = {
     "Answer",
     "Article",
     "CompletedTest",
+    "Image"
 }
+
+
+class Image(models.Model):
+    file = models.ImageField(verbose_name='Файл')
+
+    def __str__(self):
+        return f'Image - {self.pk}'
+
+    def get_image_url(self):
+        if self.file:
+            return self.file.url
+        return ''
+
+    class Meta:
+        verbose_name = "Фото"
+        verbose_name_plural = "Фото"
 
 
 class Specialization(models.Model):
@@ -79,7 +96,7 @@ class Topic(models.Model):
 
 class Test(models.Model):
     title = models.CharField(max_length=50, verbose_name="Название")
-    image = models.ImageField(verbose_name="Фото", blank=True)
+    image = models.ManyToManyField(Image, verbose_name="Фото", blank=True)
     topic = models.ForeignKey(Topic, on_delete=models.CASCADE, verbose_name="Тема")
 
     def __str__(self):
@@ -129,7 +146,7 @@ class Answer(models.Model):
 class Article(models.Model):
     title = models.CharField(max_length=100, verbose_name="Название")
     description = models.TextField(verbose_name="Описание")
-    image = models.ImageField(verbose_name="Фото", blank=True)
+    image = models.ManyToManyField(Image, verbose_name="Фото", blank=True)
     specializations = models.ManyToManyField(Specialization)
 
     def __str__(self):

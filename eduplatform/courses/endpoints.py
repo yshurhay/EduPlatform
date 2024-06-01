@@ -7,7 +7,8 @@ from .models import (Specialization,
                      Question,
                      Answer,
                      Article,
-                     CompletedTest)
+                     CompletedTest,
+                     Image)
 
 from .serializers import (SpecializationSerializer,
                             CourseSerializer,
@@ -17,7 +18,8 @@ from .serializers import (SpecializationSerializer,
                             QuestionSerializer,
                             AnswerSerializer,
                             ArticleSerializer,
-                            CompletedTestSerializer)
+                            CompletedTestSerializer,
+                            ImageSerializer)
 
 
 
@@ -70,7 +72,9 @@ class CompletedTestViewsetAPI(ModelViewSet):
     serializer_class = CompletedTestSerializer
 
 
-
+class ImageViewSetAPI(ModelViewSet):
+    queryset = Image.objects.all()
+    serializer_class = ImageSerializer
 
 
 

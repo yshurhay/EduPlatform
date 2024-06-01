@@ -8,19 +8,21 @@ from .endpoints import (SpecializationViewsetAPI,
                         QuestionViewsetAPI,
                         AnswerViewsetAPI,
                         ArticleViewsetAPI,
-                        CompletedTestViewsetAPI)
+                        CompletedTestViewsetAPI,
+                        ImageViewSetAPI)
 
 
 router = SimpleRouter()
-router.register('specialization', SpecializationViewsetAPI)
-router.register('course', CourseViewsetAPI)
-router.register('group', GroupViewsetAPI)
-router.register('topic', TopicViewsetAPI)
-router.register('test', TestViewsetAPI)
-router.register('question', QuestionViewsetAPI)
-router.register('answer', AnswerViewsetAPI)
-router.register('article', ArticleViewsetAPI)
-router.register('completedtest', CompletedTestViewsetAPI)
+router.register('specializations', SpecializationViewsetAPI)
+router.register('courses', CourseViewsetAPI)
+router.register('groups', GroupViewsetAPI)
+router.register('topics', TopicViewsetAPI)
+router.register('tests', TestViewsetAPI)
+router.register('questions', QuestionViewsetAPI)
+router.register('answers', AnswerViewsetAPI)
+router.register('articles', ArticleViewsetAPI)
+router.register('completedtests', CompletedTestViewsetAPI)
+router.register('images', ImageViewSetAPI)
 
 
 

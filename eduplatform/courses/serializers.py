@@ -7,7 +7,8 @@ from .models import (Specialization,
                      Question,
                      Answer,
                      Article,
-                     CompletedTest)
+                     CompletedTest,
+                     Image)
 
 
 class SpecializationSerializer(serializers.ModelSerializer):
@@ -62,3 +63,14 @@ class CompletedTestSerializer(serializers.ModelSerializer):
     class Meta:
         model = CompletedTest
         fields = "__all__"
+
+
+class ImageSerializer(serializers.ModelSerializer):
+    image_url = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Image
+        fields = ['image_url']
+
+    def get_image_url(self, obj):
+        return obj.get_image_url()
