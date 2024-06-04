@@ -1,6 +1,7 @@
 from rest_framework.viewsets import ModelViewSet
-from .serializers import CustomUserSerializer, StudentSerializer, TeacherSerializer
+
 from .models import CustomUser, Student, Teacher
+from .serializers import CustomUserSerializer, StudentSerializer, TeacherSerializer
 
 
 class CustomUserViewSetAPI(ModelViewSet):

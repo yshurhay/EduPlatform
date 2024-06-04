@@ -1,14 +1,17 @@
 from rest_framework import serializers
-from .models import (Specialization,
-                     Course,
-                     Group,
-                     Topic,
-                     Test,
-                     Question,
-                     Answer,
-                     Article,
-                     CompletedTest,
-                     Image)
+
+from .models import (
+    Answer,
+    Article,
+    CompletedTest,
+    Course,
+    Group,
+    Image,
+    Question,
+    Specialization,
+    Test,
+    Topic,
+)
 
 
 class SpecializationSerializer(serializers.ModelSerializer):
@@ -70,7 +73,7 @@ class ImageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Image
-        fields = ['image_url']
+        fields = ["image_url"]
 
     def get_image_url(self, obj):
         return obj.get_image_url()

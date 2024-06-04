@@ -6,11 +6,11 @@ from .models import (
     CompletedTest,
     Course,
     Group,
+    Image,
     Question,
     Specialization,
     Test,
     Topic,
-    Image
 )
 
 admin.site.register(Specialization)

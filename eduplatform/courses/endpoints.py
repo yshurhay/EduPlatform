@@ -1,29 +1,29 @@
 from rest_framework.viewsets import ModelViewSet
-from .models import (Specialization,
-                     Course,
-                     Group,
-                     Topic,
-                     Test,
-                     Question,
-                     Answer,
-                     Article,
-                     CompletedTest,
-                     Image)
 
-from .serializers import (SpecializationSerializer,
-                            CourseSerializer,
-                            GroupSerializer,
-                            TopicSerializer,
-                            TestSerializer,
-                            QuestionSerializer,
-                            AnswerSerializer,
-                            ArticleSerializer,
-                            CompletedTestSerializer,
-                            ImageSerializer)
-
-
-
-
+from .models import (
+    Answer,
+    Article,
+    CompletedTest,
+    Course,
+    Group,
+    Image,
+    Question,
+    Specialization,
+    Test,
+    Topic,
+)
+from .serializers import (
+    AnswerSerializer,
+    ArticleSerializer,
+    CompletedTestSerializer,
+    CourseSerializer,
+    GroupSerializer,
+    ImageSerializer,
+    QuestionSerializer,
+    SpecializationSerializer,
+    TestSerializer,
+    TopicSerializer,
+)
 
 
 class SpecializationViewsetAPI(ModelViewSet):
@@ -61,7 +61,6 @@ class AnswerViewsetAPI(ModelViewSet):
     serializer_class = AnswerSerializer
 
 
-
 class ArticleViewsetAPI(ModelViewSet):
     queryset = Article.objects.all()
     serializer_class = ArticleSerializer
@@ -75,14 +74,3 @@ class CompletedTestViewsetAPI(ModelViewSet):
 class ImageViewSetAPI(ModelViewSet):
     queryset = Image.objects.all()
     serializer_class = ImageSerializer
-
-
-
-
-
-
-
-
-
-
-
