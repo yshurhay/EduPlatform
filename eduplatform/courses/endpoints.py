@@ -1,5 +1,6 @@
 from rest_framework.generics import ListAPIView
 from rest_framework.viewsets import ModelViewSet
+from users.serializers import StudentSerializer
 
 from .models import (
     Answer,
@@ -86,3 +87,12 @@ class StudentCoursesListAPIView(ListAPIView):
         student = Student.objects.get(pk=pk)
         groups = student.group_set.all()
         return [group.course for group in groups]
+
+
+class GroupStudentListAPIView(ListAPIView):
+    serializer_class = StudentSerializer
+
+    def get_queryset(self):
+        pk = self.kwargs['pk']
+        group = Group.objects.get(pk=pk)
+        return Student.objects.filter(group=group).all()
