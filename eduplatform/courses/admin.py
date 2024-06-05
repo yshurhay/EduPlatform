@@ -6,6 +6,7 @@ from .models import (
     CompletedTest,
     Course,
     Group,
+    Image,
     Question,
     Specialization,
     Test,
@@ -21,3 +22,4 @@ admin.site.register(Question)
 admin.site.register(CompletedTest)
 admin.site.register(Article)
 admin.site.register(Answer)
+admin.site.register(Image)

@@ -2,6 +2,8 @@ from django.db import models
 from django.utils import timezone
 from users.models import Student, Teacher
 
+from .mixins import DateTimeMixin
+
 __all__ = {
     "Specialization",
     "Course",
@@ -12,10 +14,27 @@ __all__ = {
     "Answer",
     "Article",
     "CompletedTest",
+    "Image",
 }
 
 
-class Specialization(models.Model):
+class Image(models.Model):
+    file = models.ImageField(verbose_name="Файл")
+
+    def __str__(self):
+        return f"Image - {self.pk}"
+
+    def get_image_url(self):
+        if self.file:
+            return self.file.url
+        return ""
+
+    class Meta:
+        verbose_name = "Фото"
+        verbose_name_plural = "Фото"
+
+
+class Specialization(DateTimeMixin, models.Model):
     title = models.CharField(max_length=50)
 
     def __str__(self):
@@ -26,7 +45,7 @@ class Specialization(models.Model):
         verbose_name_plural = "Специализации"
 
 
-class Course(models.Model):
+class Course(DateTimeMixin, models.Model):
     title = models.CharField(max_length=100, verbose_name="Название")
     description = models.TextField(verbose_name="Описание")
     duration = models.DurationField(verbose_name="Продолжительность")
@@ -40,7 +59,7 @@ class Course(models.Model):
         verbose_name_plural = "Курсы"
 
 
-class Group(models.Model):
+class Group(DateTimeMixin, models.Model):
     title = models.CharField(max_length=100, verbose_name="Название")
     date_formation = models.DateField(
         verbose_name="Дата образования", default=timezone.now()
@@ -63,7 +82,7 @@ class Group(models.Model):
         verbose_name_plural = "Группы"
 
 
-class Topic(models.Model):
+class Topic(DateTimeMixin, models.Model):
     title = models.CharField(max_length=50, verbose_name="Название")
     description = models.TextField(verbose_name="Описание")
     course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name="Курс")
@@ -76,9 +95,9 @@ class Topic(models.Model):
         verbose_name_plural = "Темы"
 
 
-class Test(models.Model):
+class Test(DateTimeMixin, models.Model):
     title = models.CharField(max_length=50, verbose_name="Название")
-    image = models.ImageField(verbose_name="Фото", blank=True)
+    image = models.ManyToManyField(Image, verbose_name="Фото", blank=True)
     topic = models.ForeignKey(Topic, on_delete=models.CASCADE, verbose_name="Тема")
 
     def __str__(self):
@@ -89,7 +108,7 @@ class Test(models.Model):
         verbose_name_plural = "Тесты"
 
 
-class Question(models.Model):
+class Question(DateTimeMixin, models.Model):
     DIFFICULTY_CHOICES = [
         ("Easy", "Easy"),
         ("Medium", "Medium"),
@@ -110,7 +129,7 @@ class Question(models.Model):
         return f"{self.pk} - {self.text} - {self.difficulty}"
 
 
-class Answer(models.Model):
+class Answer(DateTimeMixin, models.Model):
     title = models.CharField(max_length=100, verbose_name="Ответ")
     is_correct = models.BooleanField(verbose_name="Верный ответ")
     question = models.ForeignKey(
@@ -125,10 +144,10 @@ class Answer(models.Model):
         return f"{self.pk} - {self.title}"
 
 
-class Article(models.Model):
+class Article(DateTimeMixin, models.Model):
     title = models.CharField(max_length=100, verbose_name="Название")
     description = models.TextField(verbose_name="Описание")
-    image = models.ImageField(verbose_name="Фото", blank=True)
+    image = models.ManyToManyField(Image, verbose_name="Фото", blank=True)
     specializations = models.ManyToManyField(Specialization)
 
     def __str__(self):
@@ -139,7 +158,7 @@ class Article(models.Model):
         verbose_name_plural = "Статьи"
 
 
-class CompletedTest(models.Model):
+class CompletedTest(DateTimeMixin, models.Model):
     test = models.ForeignKey(Test, on_delete=models.CASCADE)
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
 

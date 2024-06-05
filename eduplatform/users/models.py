@@ -1,3 +1,4 @@
+from courses.mixins import DateTimeMixin
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
@@ -9,7 +10,7 @@ from .managers import CustomUserManager
 __all__ = {"CustomUser", "Student", "Teacher"}
 
 
-class CustomUser(AbstractBaseUser, PermissionsMixin):
+class CustomUser(DateTimeMixin, AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(_("email address"), unique=True)
     first_name = models.CharField(_("first name"), max_length=50, blank=True)
     last_name = models.CharField(_("last name"), max_length=50, blank=True)
@@ -29,7 +30,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         verbose_name_plural = "Пользователи"
 
 
-class Student(models.Model):
+class Student(DateTimeMixin, models.Model):
     rating = models.PositiveSmallIntegerField(
         validators=[MinValueValidator(0), MaxValueValidator(100)],
         verbose_name="Рейтинг",
@@ -47,7 +48,7 @@ class Student(models.Model):
         verbose_name_plural = "Студенты"
 
 
-class Teacher(models.Model):
+class Teacher(DateTimeMixin, models.Model):
     user = models.OneToOneField(
         CustomUser, on_delete=models.CASCADE, verbose_name="Пользователь"
     )
