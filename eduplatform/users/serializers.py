@@ -25,7 +25,3 @@ class TeacherSerializer(ModelSerializer):
 class TeacherStudentSerializer(Serializer):
     teacher = TeacherSerializer()
     students = StudentSerializer(many=True)
-
-    class Meta:
-        model = Group
-        fields = "__all__"

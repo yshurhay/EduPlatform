@@ -1,3 +1,4 @@
+from rest_framework.generics import ListAPIView
 from rest_framework.viewsets import ModelViewSet
 
 from .models import (
@@ -24,6 +25,7 @@ from .serializers import (
     TestSerializer,
     TopicSerializer,
 )
+from users.models import Student
 
 
 class SpecializationViewsetAPI(ModelViewSet):
@@ -74,3 +76,13 @@ class CompletedTestViewsetAPI(ModelViewSet):
 class ImageViewSetAPI(ModelViewSet):
     queryset = Image.objects.all()
     serializer_class = ImageSerializer
+
+
+class StudentCoursesListAPIView(ListAPIView):
+    serializer_class = CourseSerializer
+
+    def get_queryset(self):
+        pk = self.kwargs.get('pk')
+        student = Student.objects.get(pk=pk)
+        groups = student.group_set.all()
+        return [group.course for group in groups]

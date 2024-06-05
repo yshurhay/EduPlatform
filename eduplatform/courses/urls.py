@@ -12,6 +12,7 @@ from .endpoints import (
     SpecializationViewsetAPI,
     TestViewsetAPI,
     TopicViewsetAPI,
+    StudentCoursesListAPIView,
 )
 
 router = SimpleRouter()
@@ -29,4 +30,5 @@ router.register("images", ImageViewSetAPI)
 
 urlpatterns = [
     path("", include(router.urls)),
+    path('student-courses/<int:pk>/', StudentCoursesListAPIView.as_view())
 ]
