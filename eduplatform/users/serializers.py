@@ -1,7 +1,7 @@
-from courses.models import Group
 from rest_framework.serializers import ModelSerializer, Serializer
 
 from .models import CustomUser, Student, Teacher
+from courses.models import Group
 
 
 class CustomUserSerializer(ModelSerializer):
@@ -22,6 +22,16 @@ class TeacherSerializer(ModelSerializer):
         fields = "__all__"
 
 
-class TeacherStudentSerializer(Serializer):
+class TeacherStudentSerializer(ModelSerializer):
     teacher = TeacherSerializer()
     students = StudentSerializer(many=True)
+
+    class Meta:
+        model = Group
+        fields = ['teacher', 'students']
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation['teacher'] = TeacherSerializer(instance.teacher).data
+        representation['students'] = StudentSerializer(instance.students.all(), many=True).data
+        return representation

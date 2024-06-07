@@ -1,4 +1,4 @@
-from django.urls import include, path
+from django.urls import include, path, re_path
 from rest_framework.routers import SimpleRouter
 
 from .endpoints import (
@@ -30,5 +30,5 @@ router.register("images", ImageViewSetAPI)
 
 urlpatterns = [
     path("", include(router.urls)),
-    path('student-courses/<int:pk>/', StudentCoursesListAPIView.as_view())
+    re_path('student-courses/(?P<pk>[^/.]+)/', StudentCoursesListAPIView.as_view())
 ]
