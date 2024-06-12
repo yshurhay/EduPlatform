@@ -107,3 +107,15 @@ class TeacherRecommendationListAPIView(ListAPIView):
         course_specialization = course.specialization.all()
         rec_teachers = Teacher.objects.filter(course_specialization_in=course_specialization).distinct()
         return rec_teachers
+
+
+class CourseRecommendationListAPIView(ListAPIView):
+    serializer_class = CourseSerializer
+
+    def get_queryset(self):
+        pk = self.kwargs["pk"]
+        student = Student.objects.get(pk=pk)
+        student_courses = Course.objects.filter(group__students=student).distinct()
+        student_specializations = Specialization.objects.filter(course__in=student_courses).distinct()
+        rec_courses = Course.objects.filter(specialization__in=student_specializations).exclude(group__students=student).distinct()
+        return rec_courses
