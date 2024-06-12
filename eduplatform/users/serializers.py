@@ -32,8 +32,11 @@ class TeacherStudentSerializer(ModelSerializer):
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
-        representation["teacher"] = TeacherSerializer(instance.teacher).data
-        representation["students"] = StudentSerializer(
-            instance.students.all(), many=True
-        ).data
+        match instance:
+            case Teacher():
+                representation["teacher"] = TeacherSerializer(instance.teacher).data
+            case Student():
+                representation["students"] = StudentSerializer(instance.students.all(), many=True).data
+            case _:
+                representation['details'] = 'Unknown instance type'
         return representation
