@@ -1,7 +1,6 @@
 from django.db import models
 from django.utils import timezone
 from users.models import Student, Teacher
-
 from .mixins import DateTimeMixin
 
 __all__ = {
@@ -14,20 +13,20 @@ __all__ = {
     "Answer",
     "Article",
     "CompletedTest",
-    "Image",
+    "Image"
 }
 
 
 class Image(models.Model):
-    file = models.ImageField(verbose_name="Файл")
+    file = models.ImageField(verbose_name='Файл')
 
     def __str__(self):
-        return f"Image - {self.pk}"
+        return f'Image - {self.pk}'
 
     def get_image_url(self):
         if self.file:
             return self.file.url
-        return ""
+        return ''
 
     class Meta:
         verbose_name = "Фото"
@@ -62,7 +61,7 @@ class Course(DateTimeMixin, models.Model):
 class Group(DateTimeMixin, models.Model):
     title = models.CharField(max_length=100, verbose_name="Название")
     date_formation = models.DateField(
-        verbose_name="Дата образования", default=timezone.now()
+        verbose_name="Дата образования", default=timezone.now
     )
     course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name="Курс")
     students = models.ManyToManyField(Student, verbose_name="Студенты")
