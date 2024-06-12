@@ -12,6 +12,7 @@ from .endpoints import (
     QuestionViewsetAPI,
     SpecializationViewsetAPI,
     StudentCoursesListAPIView,
+    TeacherRecommendationListAPIView,
     TestViewsetAPI,
     TopicViewsetAPI,
 )
@@ -33,4 +34,5 @@ urlpatterns = [
     path("", include(router.urls)),
     re_path("student-courses/(?P<pk>[^/.]+)/", StudentCoursesListAPIView.as_view()),
     re_path("group/(?P<pk>[^/.]+)/", GroupStudentListAPIView.as_view()),
+    re_path('course/(?P<pk>[^/.]+)/recommendations/', TeacherRecommendationListAPIView.as_view()),
 ]

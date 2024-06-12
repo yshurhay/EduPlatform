@@ -1,7 +1,7 @@
 from rest_framework.generics import ListAPIView
 from rest_framework.viewsets import ModelViewSet
-from users.models import Student
-from users.serializers import StudentSerializer
+from users.models import Student, Teacher
+from users.serializers import StudentSerializer, TeacherSerializer
 
 from .models import (
     Answer,
@@ -96,3 +96,14 @@ class GroupStudentListAPIView(ListAPIView):
         pk = self.kwargs["pk"]
         group = Group.objects.get(pk=pk)
         return Student.objects.filter(group=group).all()
+
+
+class TeacherRecommendationListAPIView(ListAPIView):
+    serializer_class = TeacherSerializer
+
+    def get_queryset(self):
+        pk = self.kwargs['pk']
+        course = Course.objects.get(pk=pk)
+        course_specialization = course.specialization.all()
+        rec_teachers = Teacher.objects.filter(course_specialization_in=course_specialization).distinct()
+        return rec_teachers
