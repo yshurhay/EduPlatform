@@ -37,5 +37,5 @@ urlpatterns = [
     re_path("student-courses/(?P<pk>[^/.]+)/", StudentCoursesListAPIView.as_view()),
     re_path("group/(?P<pk>[^/.]+)/", GroupStudentListAPIView.as_view()),
     re_path('course/(?P<pk>[^/.]+)/recommendations/', TeacherRecommendationListAPIView.as_view()),
-    path('student/<int:pk>/recommendations/', CourseRecommendationListAPIView.as_view())
+    re_path('student/(?P<pk>[^/.]+)/recommendations/', CourseRecommendationListAPIView.as_view())
 ]

@@ -1,15 +1,12 @@
-from datetime import timedelta
-
+from datetime import timedelta, datetime
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
-
 from .models import Course, Group
 from users.models import CustomUser, Teacher, Student
 
 
-class CreateGropTest(APITestCase):
-
+class BaseTestSetup(APITestCase):
     def setUp(self):
         self.course = Course.objects.create(
             title="Python Programming",
@@ -34,8 +31,10 @@ class CreateGropTest(APITestCase):
             course=self.course,
             teacher=self.teacher
         )
-
         self.group.students.set([self.student1, self.student2])
+
+
+class CreateGroupTest(BaseTestSetup):
 
     def test_create_group(self):
         url = reverse('group-list')
@@ -49,19 +48,30 @@ class CreateGropTest(APITestCase):
         response = self.client.post(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
+
+class UpdateGroupTest(BaseTestSetup):
+
     def test_update_group(self):
         url = reverse('group-detail', kwargs={'pk': self.group.pk})
         data = {
             'title': 'new test',
         }
         response = self.client.patch(url, data, format='json')
-        print(response.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+
+class DeleteGroupTest(BaseTestSetup):
 
     def test_delete_group(self):
         url = reverse('group-detail', kwargs={'pk': self.group.pk})
+        time_before = datetime.now()
         response = self.client.delete(url, format='json')
+        time_after = datetime.now()
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertLess(time_before, time_after)
+
+
+class ReadGroupTest(BaseTestSetup):
 
     def test_read_group_list(self):
         url = reverse('group-list')
