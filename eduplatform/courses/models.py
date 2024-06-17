@@ -64,7 +64,7 @@ class Group(DateTimeMixin, models.Model):
         verbose_name="Дата образования", default=timezone.now
     )
     course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name="Курс")
-    students = models.ManyToManyField(Student, verbose_name="Студенты")
+    students = models.ManyToManyField(Student, verbose_name="Студенты", related_name='groups')
     teacher = models.ForeignKey(
         Teacher, on_delete=models.CASCADE, verbose_name="Преподаватель"
     )
