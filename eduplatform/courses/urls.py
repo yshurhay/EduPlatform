@@ -5,6 +5,7 @@ from .endpoints import (
     AnswerViewsetAPI,
     ArticleViewsetAPI,
     CompletedTestViewsetAPI,
+    CourseRecommendationListAPIView,
     CourseViewsetAPI,
     GroupStudentListAPIView,
     GroupViewsetAPI,
@@ -15,9 +16,7 @@ from .endpoints import (
     TeacherRecommendationListAPIView,
     TestViewsetAPI,
     TopicViewsetAPI,
-    CourseRecommendationListAPIView,
 )
-
 
 router = SimpleRouter()
 router.register("specializations", SpecializationViewsetAPI)
@@ -36,6 +35,12 @@ urlpatterns = [
     path("", include(router.urls)),
     re_path("student-courses/(?P<pk>[^/.]+)/", StudentCoursesListAPIView.as_view()),
     re_path("group/(?P<pk>[^/.]+)/", GroupStudentListAPIView.as_view()),
-    re_path('course/(?P<pk>[^/.]+)/recommendations/', TeacherRecommendationListAPIView.as_view()),
-    re_path('student/(?P<pk>[^/.]+)/recommendations/', CourseRecommendationListAPIView.as_view())
+    re_path(
+        "course/(?P<pk>[^/.]+)/recommendations/",
+        TeacherRecommendationListAPIView.as_view(),
+    ),
+    re_path(
+        "student/(?P<pk>[^/.]+)/recommendations/",
+        CourseRecommendationListAPIView.as_view(),
+    ),
 ]

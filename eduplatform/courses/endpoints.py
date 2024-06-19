@@ -1,4 +1,4 @@
-from django.db.models import Subquery, Q
+from django.db.models import Q, Subquery
 from django.shortcuts import get_object_or_404
 from rest_framework.generics import ListAPIView
 from rest_framework.viewsets import ModelViewSet
@@ -104,10 +104,12 @@ class TeacherRecommendationListAPIView(ListAPIView):
     serializer_class = TeacherSerializer
 
     def get_queryset(self):
-        pk = self.kwargs['pk']
+        pk = self.kwargs["pk"]
         course = get_object_or_404(Course, pk=pk)
         course_specializations = course.specialization.all()
-        rec_teachers = Teacher.objects.filter(specializations__in=course_specializations).distinct()
+        rec_teachers = Teacher.objects.filter(
+            specializations__in=course_specializations
+        ).distinct()
         return rec_teachers
 
 
@@ -116,9 +118,12 @@ class CourseRecommendationListAPIView(ListAPIView):
 
     def get_queryset(self):
         pk = self.kwargs["pk"]
-        student_courses = Course.objects.filter(group__students__pk=pk).values('pk')
-        student_specializations = Specialization.objects.filter(course__in=Subquery(student_courses)).values('pk')
+        student_courses = Course.objects.filter(group__students__pk=pk).values("pk")
+        student_specializations = Specialization.objects.filter(
+            course__in=Subquery(student_courses)
+        ).values("pk")
         rec_courses = Course.objects.filter(
-            Q(specialization__in=Subquery(student_specializations)) & ~Q(group__students__pk=pk)
+            Q(specialization__in=Subquery(student_specializations))
+            & ~Q(group__students__pk=pk)
         ).distinct()
         return rec_courses

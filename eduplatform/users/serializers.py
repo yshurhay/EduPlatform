@@ -36,7 +36,9 @@ class TeacherStudentSerializer(ModelSerializer):
             case Teacher():
                 representation["teacher"] = TeacherSerializer(instance.teacher).data
             case Student():
-                representation["students"] = StudentSerializer(instance.students.all(), many=True).data
+                representation["students"] = StudentSerializer(
+                    instance.students.all(), many=True
+                ).data
             case _:
-                representation['details'] = 'Unknown instance type'
+                representation["details"] = "Unknown instance type"
         return representation
