@@ -15,7 +15,7 @@ User = get_user_model()
 
 def verify_email(request):
     if request.method == "POST":
-        if request.user.email_is_verified != True:
+        if not request.user.email_is_verified:
             current_site = get_current_site(request)
             user = request.user
             email = request.user.email

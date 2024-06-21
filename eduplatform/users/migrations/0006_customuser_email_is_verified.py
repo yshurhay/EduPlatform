@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("users", "0005_customuser_created_at_customuser_updated_at_and_more"),
     ]

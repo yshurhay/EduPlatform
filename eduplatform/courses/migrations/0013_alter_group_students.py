@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("courses", "0012_alter_group_date_formation"),
         ("users", "0006_customuser_email_is_verified"),
