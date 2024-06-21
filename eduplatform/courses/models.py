@@ -62,10 +62,12 @@ class Course(DateTimeMixin, models.Model):
 class Group(DateTimeMixin, models.Model):
     title = models.CharField(max_length=100, verbose_name="Название")
     date_formation = models.DateField(
-        verbose_name="Дата образования", default=timezone.now()
+        verbose_name="Дата образования", default=timezone.now
     )
     course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name="Курс")
-    students = models.ManyToManyField(Student, verbose_name="Студенты")
+    students = models.ManyToManyField(
+        Student, verbose_name="Студенты", related_name="groups"
+    )
     teacher = models.ForeignKey(
         Teacher, on_delete=models.CASCADE, verbose_name="Преподаватель"
     )
